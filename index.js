@@ -1,67 +1,30 @@
-document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('registrationForm').addEventListener('submit', function(event) {
-        event.preventDefault(); // Prevent the default form submission
+document.getElementById('registrationForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent the form from submitting the default way
 
-        // Clear previous errors
-        clearErrors();
+    // Get form values
+    const username = document.getElementById('username').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
 
-        // Get form values
-        var name = document.getElementById('name').value.trim();
-        var email = document.getElementById('email').value.trim();
-        var password = document.getElementById('password').value.trim();
-
-        var valid = true;
-
-        // Validate Name
-        if (name === '') {
-            document.getElementById('name').classList.add('error');
-            document.getElementById('nameError').textContent = 'Name is required.';
-            valid = false;
-        }
-
-        // Validate Email
-        if (email === '') {
-            document.getElementById('email').classList.add('error');
-            document.getElementById('emailError').textContent = 'Email is required.';
-            valid = false;
-        } else if (!validateEmail(email)) {
-            document.getElementById('email').classList.add('error');
-            document.getElementById('emailError').textContent = 'Invalid email format.';
-            valid = false;
-        }
-
-        // Validate Password
-        if (password === '') {
-            document.getElementById('password').classList.add('error');
-            document.getElementById('passwordError').textContent = 'Password is required.';
-            valid = false;
-        }
-
-        // If form is valid, you can submit the form or process data
-        if (valid) {
-            // For now, just show an alert
-            alert('Form submitted successfully!');
-            // You can add code here to submit the form or process data
-            // Example: document.getElementById('registrationForm').submit();
-        }
-    });
-
-    function validateEmail(email) {
-        // Simple email validation regex
-        var re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-        return re.test(email);
+    // Validate form inputs
+    if (username === '' || email === '' || password === '' || confirmPassword === '') {
+        displayMessage('All fields are required.', 'error');
+        return;
     }
 
-    function clearErrors() {
-        var errorElements = document.querySelectorAll('.error-message');
-        var inputElements = document.querySelectorAll('input');
-
-        errorElements.forEach(function(el) {
-            el.textContent = '';
-        });
-
-        inputElements.forEach(function(el) {
-            el.classList.remove('error');
-        });
+    if (password !== confirmPassword) {
+        displayMessage('Passwords do not match.', 'error');
+        return;
     }
+
+    // If validation is successful
+    displayMessage('Registration successful!', 'success');
 });
+
+function displayMessage(message, type) {
+    const messageElement = document.getElementById('message');
+    messageElement.textContent = message;
+    messageElement.style.color = type === 'error' ? 'red' : 'green';
+}
+
